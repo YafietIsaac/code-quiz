@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container">
+    <div id="info">
+      <div>
+        <h1>Start the Code Quiz</h1>
+        <button id="start">Start</button>
+      </div>
+    </div>
+    <dvi id="timer">Timer: </dvi>
+    <div id="result"></div>
+  </div>
+
+
+
+  <script>
+    let questNumber=0
+    let points = 0
+    let questIndex=0
+    let sec=60
+    const questions = [
+      { 
+        question:"Which is the same as num=num+1?",
+        answers:['num++','num++1','num/1','num%1'],
+        correct:'num++'
+
+      },
+      {
+        question:"Which is NOT a primitive data type?",
+        answers:['Boolean','Numbers','Strings','Objects'],
+        correct:'Objects'
+      },
+      {
+        question:'Which is the same as num=num-1?',
+        answers:['num--','num--1','num++1','num%1'],
+        correct:'num--'
+      },
+      {
+        question:'What is the correct syntax for a variable while using a template literal?',
+        answers:['${}','$[]','@< >','&{}'],
+        correct:'${}'
+      }
+      
+      ]
+
+    const questFunc = (questions) =>{
+      document.getElementById('info').innerHTML=`
+        <div>
+          <h1>${questions.question}</h1>
+          <button id=${questions.answers[0]} class="answers">${questions.answers[0]}</button>
+          <button id=${questions.answers[1]} class="answers">${questions.answers[1]}</button>
+          <button id=${questions.answers[2]} class="answers">${questions.answers[2]}</button>
+          <button id=${questions.answers[3]} class="answers">${questions.answers[3]}</button>
+        </div>
+      `
+
+      
+
+    }
+
+    document.getElementById('start').addEventListener('click',()=>{
+
+      let timer = setInterval(() => {
+        sec--
+        document.getElementById('timer').textContent = `${sec} seconds`
+
+        if(sec===0||questIndex==4){
+          clearInterval(timer)
+        }
+
+        
+
+      }, 1000)
+
+
+      questFunc(questions[questIndex])
+      //console.log(questIndex)
+
+      
+
+      
+
+    })
+
+    
+    document.addEventListener('click', event=>{
+      if(event.target.classList.contains('answers')){
+        //console.log(event.target.id)
+
+        if(event.target.id==questions[questIndex].correct){
+          document.getElementById('result').innerHTML=`
+          <h1>Yay! that answer is correct</h1>`
+          questIndex++
+          questNumber++
+          points+=5
+          console.log(questIndex)
+          if(questIndex<=3){
+          questFunc(questions[questIndex])}
+          
+        }else{
+          document.getElementById('result').innerHTML = `
+          <h1>Oh no! the answer is wrong</h1>`
+          questIndex++
+          questNumber++
+          timer-=5000
+          console.log(questIndex)
+          if(questIndex<=3){
+          questFunc(questions[questIndex])}
+          
+        }
+
+      }if(questIndex==4){
+        clearInterval(timer)
+      document.getElementById('result').innerHTML = `
+      
+      <h1> Your Final Score: ${points} </h1>
+      
+      <form>
+      <p>
+      <label for="name">Name: </label>
+      <input type="text" name="name" id="name">
+      </p>
+      <p>
+      <button id='submit'>Submit</button>
+      </p<
+      </form>
+
+      `
+      document.getElementById('name').addEventListener('click',event=>{
+        event.preventDefault()
+      let name = document.getElementById('name').value 
+
+      localStorage.setItem(JSON.stringify(name),JSON.stringify(points))
+      
+      })
+
+    }else{}
+    })
+
+    
+
+    
+
+
+  </script>
+
+  </div>
+</body>
+</html>
